@@ -1,0 +1,92 @@
+<template>
+
+<div>
+	<div class="intro-y box p-5 mt-5">
+        <a  v-on:click="$router.go(-2)" class="flex items-center cursor-pointer mb-4">
+            <svg class="fill-current w-5 h-5" viewBox="0 0 448 512"><path d="M134.059 296H436c6.627 0 12-5.373 12-12v-56c0-6.627-5.373-12-12-12H134.059v-46.059c0-21.382-25.851-32.09-40.971-16.971L7.029 239.029c-9.373 9.373-9.373 24.569 0 33.941l86.059 86.059c15.119 15.119 40.971 4.411 40.971-16.971V296z"/></svg>
+            <span class=" ml-1">Back</span>
+        </a>
+        <!-- <div class="text-lg text-black font-semibold leading-loose">Event Details</div> -->
+
+        <span class="flex flex-col px-6 py-4 gap-y-2" style="width: fit-content">
+            <div class="font-bold leading-loose border-b border-gray-300 border-dotted pb-1 mb-1">Details</div>
+            <div class="flex gap-x-6">
+                <!-- row must be balance -->
+                <!-- maximum of 7-8 rows when adding 2nd column -->
+                <!-- 1st column example -->
+                <!-- add this class in first column div when adding second column: 'border-r border-gray-200' -->
+                <div class="flex flex-col pb-3 gap-y-3 border-r border-gray-200">
+                    <div class="flex leading-loose">
+                        <div class="w-52 font-semibold pr-3">Event Name</div>
+                        <div class="w-96 pr-3">{{ event.event_name }}</div>
+                    </div>
+                    <div class="flex leading-loose">
+                        <div class="w-52 font-semibold pr-3">Event Description</div>
+                        <div class="w-96 pr-3">{{ event.description }}</div>
+                    </div>
+                    <div class="flex leading-loose">
+                        <div class="w-52 font-semibold pr-3">Starting Time</div>
+                        <div class="w-96 pr-3">{{ event.starting_time }}</div>
+                    </div>
+                    <div class="flex leading-loose">
+                        <div class="w-52 font-semibold pr-3">Event Type</div>
+                        <div class="w-96 pr-3">{{ event.type }}</div>
+                    </div>
+                </div>
+                <!-- 2nd column example -->
+                <div class="flex flex-col pb-3 gap-y-3">
+                    <div class="flex leading-loose">
+                        <div class="w-52 font-semibold pr-3">Category</div>
+                        <div class="w-96 pr-3">{{ event.category }}</div>
+                    </div>
+                    <div class="flex leading-loose">
+                        <div class="w-52 font-semibold pr-3">Top Up Amount</div>
+                        <div class="w-96 pr-3">{{ event.top_up_amount }}</div>
+                    </div>
+                    <div class="flex leading-loose">
+                        <div class="w-52 font-semibold pr-3">Restriction</div>
+                        <div class="w-96 pr-3">{{ event.restriction == 1 ? "On" : "Off" }}</div>
+                    </div>
+                    <div class="flex leading-loose">
+                        <div class="w-52 font-semibold pr-3">Published Date</div>
+                        <div class="w-96 pr-3">{{ event.published_date }}</div>
+                    </div>
+                </div>
+            </div>
+        </span>
+    </div>
+    <posting />
+
+    <activity-log
+        :event="event"
+        v-can="'view-activity-log.event'" />
+
+</div>
+
+</template>
+<script>
+import Posting from '../event-postings/index';
+import ActivityLog from '../event-activity-log/index';
+	export default {
+        components : { Posting, ActivityLog },
+		data() {
+			return {
+				event: {}
+			}
+		},
+		created() {
+			this.show();
+		},
+		methods: {
+			show() {
+				   axios.get('/events/' + this.$route.params.id)
+			        .then((response) => {
+			            this.event = response.data;
+			        })
+			        .catch((error) => {
+			            console.log(error);
+			        });
+			}
+		}
+	}
+</script>

@@ -1,0 +1,18 @@
+.main {
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    @apply py-5;
+}
+
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+    border-radius: 9999px;
+    width: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: #B4C7FF;
+}
